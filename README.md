@@ -1,10 +1,10 @@
-A compressor Pure Data external using [pd-lib-builder](https://github.com/pure-data/pd-lib-builder), based on the pure-data helloworld repo (https://github.com/pure-data/helloworld.git). 
+A compressor Pure Data external using [pd-lib-builder](https://github.com/pure-data/pd-lib-builder), based on the Pure Data helloworld repo (https://github.com/pure-data/helloworld.git). 
 
 ## Usage ##
 
 Clone and build this example via:
 
-    git clone --recursive https://github.com/alexheinrich/pd-compressor
+    git clone --recursive git@github.com:alexheinrich/pd-compressor.git
     cd pd-compressor
     make
 
