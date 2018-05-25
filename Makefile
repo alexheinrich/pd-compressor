@@ -3,13 +3,13 @@
 # settings and rules.
 
 # library name
-lib.name = helloworld
+lib.name = stp_comp~
 
 # input source file (class name == source file basename)
-class.sources = helloworld.c
+class.sources = stp_comp~.c
 
 # all extra files to be included in binary distribution of the library
-datafiles = helloworld-help.pd helloworld-meta.pd README.md
+datafiles = stp_comp-help.pd stp_comp-meta.pd README.md
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
