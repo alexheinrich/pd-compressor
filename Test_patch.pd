@@ -1,0 +1,43 @@
+#N canvas 1921 63 1918 1016 10;
+#X obj 28 597 dac~ 1;
+#X text 20 642 audio output;
+#X text 102 19 <-Click to start;
+#X text 95 68 <-Click to stop;
+#X obj 222 249 stp_comp~;
+#X obj 346 46 osc~ 440;
+#X obj 486 67 vsl 15 50 0 1 0 0 empty empty Osc_Volume 0 -9 0 10 -262144
+-1 -1 4900 1;
+#X obj 489 299 - 100;
+#X obj 426 202 *~;
+#X msg 18 59 \; pd dsp 0 \;;
+#X msg 21 6 \; pd dsp 1 \;;
+#X obj 487 260 env~;
+#X text 335 26 Cosine Osc;
+#X obj 231 312 env~;
+#X obj 490 383 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
+#X obj 235 388 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
+#X obj 228 356 - 100;
+#X obj 309 177 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 1 256;
+#X obj 249 66 vsl 15 50 0 1 0 0 empty empty Comp_Gain 0 -9 0 10 -262144
+-1 -1 4900 1;
+#X obj 485 181 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 1 256;
+#X text 215 523 Compressor Output;
+#X text 453 519 Original Output;
+#X text 585 19 Test for checking the gain feature of the compressor.
+Left side slider is assigning gain value for the compressor and the
+right side slider for pd's volume control;
+#X connect 4 0 13 0;
+#X connect 4 1 13 0;
+#X connect 5 0 8 0;
+#X connect 5 0 4 0;
+#X connect 6 0 19 0;
+#X connect 7 0 14 0;
+#X connect 8 0 11 0;
+#X connect 11 0 7 0;
+#X connect 13 0 16 0;
+#X connect 16 0 15 0;
+#X connect 17 0 4 1;
+#X connect 18 0 17 0;
+#X connect 19 0 8 1;

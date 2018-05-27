@@ -5,11 +5,14 @@ static t_class *stp_comp_tilde_class;
 typedef struct stp_comp_tilde
 {
     t_object  x_obj;
-    t_sample f;
-    t_sample makeup_gain;
-    t_sample ratio;
-    t_sample threshold;
-    t_inlet *x_in;
+    t_float  f;
+    t_float makeup_gain;
+    t_float ratio;
+    t_float threshold;
+
+    t_inlet *x_in2;
+    t_inlet *x_in3;
+    t_inlet *x_in4;
     t_outlet*x_out;
 } stp_comp_tilde;
 
@@ -43,27 +46,55 @@ void stp_comp_tilde_dsp(stp_comp_tilde *x, t_signal **sp)
 
 void stp_comp_tilde_free(stp_comp_tilde *x)
 {
-	inlet_free(x->x_out);
+	inlet_free(x->x_in2);
+	inlet_free(x->x_in3);
+	inlet_free(x->x_in4);
     outlet_free(x->x_out);
 }
 
-void *stp_comp_tilde_new(t_floatarg f)
+// Create the stp_comp objectt hat was used for object creation
+// Because of the declaration of arguments in the class_new-function with A_GIMME, the constructor has following arguments:
+// *s	the symbolic name,
+// argc	the number of arguments passed to the object
+// argv	a pointer to a list of argc atoms
+
+void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
     stp_comp_tilde *x = (stp_comp_tilde *)pd_new(stp_comp_tilde_class);
-
-    x->x_in = floatinlet_new (&x->x_obj, &x->makeup_gain);
-    //The main inlet is created automatically
+    // Create outputs
     x->x_out = outlet_new(&x->x_obj, &s_signal);
     x->x_out = outlet_new(&x->x_obj, &s_signal);
+    // When creating the object, several arguments should be passed by the user.
+    // If the required amount of arguments have not been passed by the user, assign default values
+    // Default values of the object
     x->makeup_gain = 0;
     x->threshold = 0.5;
     x->ratio = 2;
+
+    switch(argc){
+    default:
+    case 3:
+      x->ratio=atom_getfloat(argv+2);
+    case 2:
+      x->threshold=atom_getfloat(argv+1);
+    case 1:
+      x->makeup_gain=atom_getfloat(argv);
+      break;
+    case 0:
+      break;
+    }
+    // Assign parameters
+    x->x_in2 = floatinlet_new (&x->x_obj, &x->makeup_gain);
+    x->x_in3 = floatinlet_new (&x->x_obj, &x->threshold);
+    x->x_in4 = floatinlet_new (&x->x_obj, &x->ratio);
     return (void *)x;
 }
 
-void stp_comp_set(stp_comp_tilde *x, float gain)
+void stp_comp_set(stp_comp_tilde *x, t_floatarg gain, t_floatarg threshold, t_floatarg ratio)
 {
     x->makeup_gain = gain;
+    x->threshold = threshold;
+    x->ratio = ratio;
 }
 
 void stp_comp_tilde_setup(void)
@@ -71,14 +102,14 @@ void stp_comp_tilde_setup(void)
       stp_comp_tilde_class = class_new(gensym("stp_comp~"),
             (t_newmethod)stp_comp_tilde_new,
             (t_method)stp_comp_tilde_free,
-        sizeof(stp_comp_tilde),
+            sizeof(stp_comp_tilde),
             CLASS_DEFAULT,
-            A_DEFFLOAT, 0);
+            A_GIMME, 0);
 
       class_addmethod(stp_comp_tilde_class, (t_method)stp_comp_tilde_dsp, gensym("dsp"), 0);
 
       // this adds the gain message to our object
-      class_addmethod(stp_comp_tilde_class, (t_method)stp_comp_set, gensym("gain"), A_DEFFLOAT,0);
-
+      //class_addmethod(stp_comp_tilde_class, (t_method)stp_comp_set, gensym("gain"), A_DEFFLOAT,0);
+      class_addmethod(stp_comp_tilde_class, (t_method)stp_comp_set, gensym("set"), A_DEFFLOAT, 0);
       CLASS_MAINSIGNALIN(stp_comp_tilde_class, stp_comp_tilde, f);
 }
