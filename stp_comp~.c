@@ -1,4 +1,6 @@
 #include "m_pd.h"
+#include <math.h>
+#include <stdlib.h>
 
 static t_class *stp_comp_tilde_class;
 
@@ -10,6 +12,7 @@ typedef struct stp_comp_tilde
     t_float makeup_gain;
     t_float ratio;
     t_float threshold;
+    t_float knee_width;
     t_inlet *x_in2;
     t_inlet *x_in3;
     t_inlet *x_in4;
@@ -27,8 +30,10 @@ t_int *stp_comp_tilde_perform(t_int *w)
 
     for (i=0; i<n; i++) {
     	// formel 3 aus dem Paper
-    	if(in[i] <= x->threshold) {
+    	if(2 * (in[i] - x->threshold) < - x->knee_width) {
     		out[i] = in[i];
+    	} else if (2 * fabsf(in[i] - x->threshold) <= x->knee_width) {
+    		out[i] = in[i] + (1 / x->ratio - 1) * pow(in[i] - x->threshold + x->knee_width / 2, 2) / (2 * x->knee_width);
     	} else {
     		out[i] = x->threshold + (in[i] - x->threshold) / x->ratio;
     	}
@@ -78,6 +83,7 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
     x->makeup_gain = 0;
     x->threshold = 0.5;
     x->ratio = 2;
+    x->knee_width = 1;
 
     switch (argc) {
 		default:
@@ -88,7 +94,6 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
 		case 1:
 			x->makeup_gain = atom_getfloat(argv);
 			break;
-
 		case 0:
 			break;
     }
