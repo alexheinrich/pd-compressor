@@ -5,6 +5,8 @@ static t_class *stp_comp_tilde_class;
 typedef struct stp_comp_tilde
 {
     t_object  x_obj;
+
+    t_int status;
     t_float  f;
     t_float makeup_gain;
     t_float ratio;
@@ -34,7 +36,10 @@ t_int *stp_comp_tilde_perform(t_int *w)
 
     	out[i] = in[i] * x->makeup_gain;
     }
-
+    if (x->status == 0) {
+    post("%f", x->threshold);
+    x->status = 1;
+    }
     /* return a pointer to the dataspace for the next dsp-object */
     return (w+5);
 }
@@ -63,7 +68,7 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
     stp_comp_tilde *x = (stp_comp_tilde *)pd_new(stp_comp_tilde_class);
     // Create outputs
     x->x_out = outlet_new(&x->x_obj, &s_signal);
-    x->x_out = outlet_new(&x->x_obj, &s_signal);
+    x->x_out = outlet_new(&x->x_obj, &s_float);
     // When creating the object, several arguments should be passed by the user.
     // If the required amount of arguments have not been passed by the user, assign default values
     // Default values of the object
