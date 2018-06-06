@@ -10,27 +10,32 @@ typedef struct stp_comp_tilde
     t_int status;
     // Signal Class Related variable
     t_float  f;
+
     // Variables for Gain computing
     t_float makeup_gain; // dB
     t_float ratio; // linear
     t_float threshold; // dB
     t_float knee_width;
+
     // Variables for peak detector
     t_float attack;  // ms
     t_float release; // ms
+
     // Object inlets
     t_inlet *in_makeup;
     t_inlet *in_threshold;
     t_inlet *in_ratio;
     t_inlet *in_attack;
     t_inlet *in_release;
+
     // Object outlets
     t_outlet*x_out_l;
     t_outlet*x_out_r;
 } stp_comp_tilde;
 
-// Prototype
+// Prototypes
 t_sample gainComputer(t_sample in, t_float ratio, t_float threshold, t_float knee_width);
+t_sample simpleGainComputer(t_sample in, t_float ratio, t_float threshold);
 t_sample smoothDetection(t_sample x,t_sample y, t_float a_attack, t_float a_release);
 
 t_int *stp_comp_tilde_perform(t_int *w)
@@ -39,33 +44,52 @@ t_int *stp_comp_tilde_perform(t_int *w)
     t_sample  *in = (t_sample *)(w[2]);
     t_sample  *out =  (t_sample *)(w[3]);
     int n =  (int)(w[4]);
-    int i;
-
-    t_sample outGain[n];
-    t_sample inLevelDetector[n];
-    t_sample outLevelDetector = 0;
-    t_sample controlVoltage;
-    t_sample abs_in[n];
-    float fs = sys_getsr(); //Get Sampling Freq from the system
-    //Debugger shit
-    //post("Fs= %f",fs);
 
     // Calculate smooth detection filter coefficients eq. 7
-    t_sample a_attack = expf(-1/(x->attack*fs));
-    t_sample a_release = expf(-1/(x->release*fs));
+    float fs = sys_getsr(); // Get sampling freq from the system
+    t_sample a_attack = expf(-1 / (x->attack * fs));
+    t_sample a_release = expf(-1 / (x->release * fs));
 
-    for (i=0; i<n; i++) {
-    	abs_in[i] = abs(in[i]);
-    	outGain[i] = gainComputer(abs_in[i],x->threshold,x->ratio,x->knee_width);
-    	post("gain computer %f",outGain[i]);
-    	inLevelDetector[i] = abs_in[i]-outGain[i];
-    	outLevelDetector = smoothDetection(inLevelDetector[i], outLevelDetector, a_attack, a_release);
-    	post("outLevelDetector %f",outLevelDetector);
+    t_sample in_abs, buffer, outLevelDetector, controlVoltage;
+    outLevelDetector = 0;
+
+    for (int i = 0; i < n; i++) {
+    	// Calc abs value of sample
+    	in_abs = fabsf(in[i]);
+    	buffer = in_abs;
+
+    	// Gain computer
+    	if (2 * (buffer - x->threshold) < -1 * x->knee_width) {
+    		buffer = buffer;
+    	}
+    	else if (2 * fabsf(buffer - x->threshold) <= x->knee_width) {
+    		buffer = buffer + (1 / x->ratio - 1) * pow(buffer - x->threshold + x->knee_width / 2, 2) / (2 * x->knee_width);
+    	}
+    	else {
+    		buffer = x->threshold + (buffer - x->threshold) / x->ratio;
+    	}
+
+    	// Before level detector (feed forward loop)
+    	buffer = in_abs - buffer;
+
+    	// Seems ok up until here...
+    	// post("buffer %f", buffer);
+
+    	// TODO: Debug... value is very small
+    	// Level detector
+    	if (buffer > outLevelDetector) {
+    		outLevelDetector = a_attack * outLevelDetector + (1 - a_attack) * buffer;
+    	}
+    	else {
+    		outLevelDetector = a_release * outLevelDetector + (1 - a_release) * buffer;
+    	}
+
     	controlVoltage = x->makeup_gain - outLevelDetector;
+
     	out[i] = in[i] * controlVoltage;
-    	post("control voltage %f",controlVoltage);
     }
-    /* return a pointer to the dataspace for the next dsp-object */
+
+    // Return a pointer to the dataspace for the next dsp-object
     return (w+5);
 }
 
@@ -81,40 +105,12 @@ void stp_comp_tilde_free(stp_comp_tilde *x)
 	inlet_free(x->in_ratio);
 	inlet_free(x->in_attack);
 	inlet_free(x->in_release);
+
     outlet_free(x->x_out_l);
     outlet_free(x->x_out_r);
 }
 
-//
-
-t_sample gainComputer(t_sample in, t_float ratio, t_float threshold, t_float knee_width) {
-	t_sample out;
-	if(2 * (in - threshold) < - knee_width) {
-		out = in;
-	} else if (2 * fabsf(in - threshold) <= knee_width) {
-		out = in + (1 / ratio - 1) * pow(in - threshold + knee_width / 2, 2) / (2 * knee_width);
-	} else {
-		out = threshold + (in - threshold) / ratio;
-	}
-	return out;
-}
-
-// x is current sample and y is the result of last smoothed sample.
-// a_attack and a_relase are filter coefficients. fs sampling frequency in Hz
-// returns smoothed sample
-t_sample smoothDetection(t_sample x,t_sample y, t_float a_attack, t_float a_release) {
-	t_sample out;
-	// Calculate filter coefficients for attack and release time eq. 7
-	if (x>y){
-		out = (a_attack*y) + (1-a_attack)*x;
-	}
-	else {
-		out = (a_release*y) + (1-a_release)*x;
-	}
-	return out;
-}
-
-// Create the stp_comp objectt hat was used for object creation
+// Create the stp_comp object hat was used for object creation
 // Because of the declaration of arguments in the class_new-function with A_GIMME, the constructor has following arguments:
 // *s	the symbolic name,
 // argc	the number of arguments passed to the object
@@ -126,13 +122,14 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
     // Create outputs
     x->x_out_l = outlet_new(&x->x_obj, &s_signal);
     x->x_out_r = outlet_new(&x->x_obj, &s_signal);
+
     // When creating the object, several arguments should be passed by the user.
     // If the required amount of arguments have not been passed by the user, assign default values
     // Default values of the object
-    x->makeup_gain = 0;
+    x->makeup_gain = 1;
     x->threshold = 0.5;
-    x->ratio = 2;
-    x->knee_width = 1;
+    x->ratio = 5;
+    x->knee_width = 0.1;
     x->attack = 10;
     x->release = 100;
 
@@ -159,11 +156,13 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
     return (void *)x;
 }
 
-void stp_comp_set(stp_comp_tilde *x, t_floatarg gain, t_floatarg threshold, t_floatarg ratio)
+void stp_comp_set(stp_comp_tilde *x, t_floatarg gain, t_floatarg threshold, t_floatarg ratio, t_floatarg attack, t_floatarg release)
 {
     x->makeup_gain = gain;
     x->threshold = threshold;
     x->ratio = ratio;
+    x->attack = attack;
+    x->release = release;
 }
 
 void stp_comp_tilde_setup(void)
