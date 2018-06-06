@@ -8,14 +8,23 @@ typedef struct stp_comp_tilde
 {
     t_object  x_obj;
     t_int status;
+    // Signal Class Related variable
     t_float  f;
-    t_float makeup_gain;
-    t_float ratio;
-    t_float threshold;
+    // Variables for Gain computing
+    t_float makeup_gain; // dB
+    t_float ratio; // linear
+    t_float threshold; // dB
     t_float knee_width;
-    t_inlet *x_in2;
-    t_inlet *x_in3;
-    t_inlet *x_in4;
+    // Variables for peak detector
+    t_float attack;  // ms
+    t_float release; // ms
+    // Object inlets
+    t_inlet *in_makeup;
+    t_inlet *in_threshold;
+    t_inlet *in_ratio;
+    t_inlet *in_attack;
+    t_inlet *in_release;
+    // Object outlets
     t_outlet*x_out_l;
     t_outlet*x_out_r;
 } stp_comp_tilde;
@@ -27,6 +36,14 @@ t_int *stp_comp_tilde_perform(t_int *w)
     t_sample  *out =  (t_sample *)(w[3]);
     int n =  (int)(w[4]);
     int i;
+
+    float fs = sys_getsr(); //Get Sampling Freq from the system
+    //Debugger shit
+    post("Fs= %f",fs);
+
+    // Calculate smooth detection filter coefficients eq. 7
+    t_sample a_attack = expf(-1/(x->attack*fs));
+    t_sample a_release = expf(-1/(x->release*fs));
 
     for (i=0; i<n; i++) {
     	// formel 3 aus dem Paper
@@ -57,13 +74,36 @@ void stp_comp_tilde_dsp(stp_comp_tilde *x, t_signal **sp)
 
 void stp_comp_tilde_free(stp_comp_tilde *x)
 {
-	inlet_free(x->x_in2);
-	inlet_free(x->x_in3);
-	inlet_free(x->x_in4);
+	inlet_free(x->in_makeup);
+	inlet_free(x->in_threshold);
+	inlet_free(x->in_ratio);
+	inlet_free(x->in_attack);
+	inlet_free(x->in_release);
     outlet_free(x->x_out_l);
     outlet_free(x->x_out_r);
 }
 
+//
+
+t_sample gainComputer(t_sample in,float ratio, float threshold, float knee) {
+	t_sample out;
+	if(in <=  threshold) {
+		return out = in;
+	} else {
+		return out = threshold + (in - threshold) / ratio;
+	}
+}
+
+// x_in is one sample of the buffer.
+// According to attack and release input it calculates smooth detection filter coefficients. Dete
+// returns co
+//t_sample smoothDetection(t_sample x_in, t_float attack, t_float release) {
+//
+//	// Calculate filter coefficients for attack and release time eq. 7
+//
+//
+//
+//}
 // Create the stp_comp objectt hat was used for object creation
 // Because of the declaration of arguments in the class_new-function with A_GIMME, the constructor has following arguments:
 // *s	the symbolic name,
@@ -76,7 +116,6 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
     // Create outputs
     x->x_out_l = outlet_new(&x->x_obj, &s_signal);
     x->x_out_r = outlet_new(&x->x_obj, &s_signal);
-
     // When creating the object, several arguments should be passed by the user.
     // If the required amount of arguments have not been passed by the user, assign default values
     // Default values of the object
@@ -84,6 +123,8 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
     x->threshold = 0.5;
     x->ratio = 2;
     x->knee_width = 1;
+    x->attack = 10;
+
 
     switch (argc) {
 		default:
@@ -99,9 +140,11 @@ void *stp_comp_tilde_new(t_symbol *s, int argc, t_atom *argv)
     }
 
     // Assign parameters
-    x->x_in2 = floatinlet_new(&x->x_obj, &x->makeup_gain);
-    x->x_in3 = floatinlet_new(&x->x_obj, &x->threshold);
-    x->x_in4 = floatinlet_new(&x->x_obj, &x->ratio);
+    x->in_makeup = floatinlet_new(&x->x_obj, &x->makeup_gain);
+    x->in_threshold = floatinlet_new(&x->x_obj, &x->threshold);
+    x->in_ratio = floatinlet_new(&x->x_obj, &x->ratio);
+    x->in_attack = floatinlet_new(&x->x_obj, &x->attack);
+    x->in_release = floatinlet_new(&x->x_obj, &x->release);
 
     return (void *)x;
 }
