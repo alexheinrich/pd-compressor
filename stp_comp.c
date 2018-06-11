@@ -33,10 +33,10 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
     	in_abs = fabsf(in[i]);
 
     	// Gain computer
-    	if (2 * (in_abs - x->threshold) < -1 * x->knee_width) {
+    	if (2 * (in[i] - x->threshold) < -1 * x->knee_width) {
     		buffer = in[i];
     	}
-    	else if (2 * fabsf(in_abs - x->threshold) <= x->knee_width) {
+    	else if (2 * fabsf(in[i] - x->threshold) <= x->knee_width) {
     		buffer = in[i] + (1 / x->ratio - 1) * pow(in[i] - x->threshold + x->knee_width / 2, 2) / (2 * x->knee_width);
     	}
     	else {
