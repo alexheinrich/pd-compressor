@@ -34,13 +34,13 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
 
     	// Gain computer
     	if (2 * (in_abs - x->threshold) < -1 * x->knee_width) {
-    		buffer = in_abs;
+    		buffer = in[i];
     	}
     	else if (2 * fabsf(in_abs - x->threshold) <= x->knee_width) {
-    		buffer = in_abs + (1 / x->ratio - 1) * pow(in_abs - x->threshold + x->knee_width / 2, 2) / (2 * x->knee_width);
+    		buffer = in[i] + (1 / x->ratio - 1) * pow(in[i] - x->threshold + x->knee_width / 2, 2) / (2 * x->knee_width);
     	}
     	else {
-    		buffer = x->threshold + (in_abs - x->threshold) / x->ratio;
+    		buffer = x->threshold + (in[i] - x->threshold) / x->ratio;
     	}
 
     	// Pre level detector (feed forward loop)
