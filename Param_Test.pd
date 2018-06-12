@@ -1,63 +1,122 @@
-#N canvas 523 51 766 668 10;
-#X obj 179 417 stp_comp~;
-#X obj 403 69 osc~ 440;
-#X text 102 19 <-Click to start;
-#X text 95 68 <-Click to stop;
-#X msg 18 59 \; pd dsp 0 \;;
-#X msg 21 6 \; pd dsp 1 \;;
-#X obj 486 67 vsl 15 50 0.001 10 1 0 empty empty Osc_Volume 0 -9 0
-10 -262144 -1 -1 3800 1;
-#X obj 472 309 - 100;
-#X obj 470 218 *~;
-#X obj 470 259 env~;
+#N canvas 0 63 1368 677 10;
+#X obj 179 431 stp_comp~;
+#X obj 864 137 osc~ 440;
+#X text 1209 31 <-Click to start;
+#X text 1202 80 <-Click to stop;
+#X msg 1125 71 \; pd dsp 0 \;;
+#X msg 1128 18 \; pd dsp 1 \;;
+#X obj 949 94 vsl 15 50 0.001 1 0 0 empty empty KickVolume 0 -9 0 10
+-191407 -258113 -4160 4900 1;
+#X obj 922 396 - 100;
+#X obj 924 287 *~;
+#X obj 920 346 env~;
 #X obj 337 567 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
-#X obj 486 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 1.26486 256;
+#X obj 1016 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
+10 -262144 -1 -1 1 256;
 #X text 300 703 Original Output;
-#X obj 79 250 nbx 5 14 -1e+37 1e+37 0 0 empty empty Makeup_Gain 0 -8
-0 10 -262144 -1 -1 0 256;
-#X obj 149 251 nbx 5 14 -1e+37 1e+37 0 0 empty empty Threshold 0 -8
-0 10 -262144 -1 -1 0 256;
-#X obj 207 251 nbx 5 14 -1e+37 1e+37 0 0 empty empty Ratio 0 -8 0 10
--262144 -1 -1 0 256;
-#X obj 265 251 nbx 5 14 -1e+37 1e+37 0 0 empty empty Attack 0 -8 0
-10 -262144 -1 -1 0 256;
-#X obj 324 250 nbx 5 14 -1e+37 1e+37 0 0 empty empty Release 0 -8 0
-10 -262144 -1 -1 0 256;
-#X obj 180 505 - 100;
-#X obj 178 455 env~;
+#X obj 350 252 nbx 5 14 -1e+37 1e+37 0 0 empty empty Ratio 0 -8 0 10
+-262144 -1 -1 10 256;
+#X obj 427 252 nbx 5 14 -1e+37 1e+37 0 0 empty empty Attack_(ms) 0
+-8 0 10 -262144 -1 -1 1938.47 256;
+#X obj 501 253 nbx 5 14 -1e+37 1e+37 0 0 empty empty Release_(ms) 0
+-8 0 10 -262144 -1 -1 0 256;
+#X obj 180 507 - 100;
+#X obj 185 473 env~;
 #X obj 189 565 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
 #X text 154 702 Compressor Output;
-#X obj 475 389 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 -0.969437 256;
-#X obj 80 146 vsl 15 56 0 10 0 0 empty empty Makeup_Gain -22 -9 0 10
--262144 -1 -1 0 1;
-#X obj 150 144 vsl 15 56 0 10 0 0 empty empty Threshold -22 -9 0 10
--262144 -1 -1 0 1;
-#X obj 204 144 vsl 15 56 0 10 0 0 empty empty Ratio -8 -9 0 10 -262144
--1 -1 0 1;
-#X obj 264 150 vsl 15 56 0 10 0 0 empty empty Attack -10 -9 0 10 -262144
--1 -1 0 1;
-#X obj 328 149 vsl 15 56 0 10 0 0 empty empty Release -12 -9 0 10 -262144
--1 -1 0 1;
-#X connect 0 0 19 0;
+#X obj 925 476 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 -3.01043 256;
+#X obj 92 83 vsl 15 56 1 1000 1 0 empty empty Makeup_Gain -22 -9 0
+10 -191407 -1 -159808 0 1;
+#X obj 243 85 vsl 15 56 1e-08 1 1 0 empty empty Threshold -22 -9 0
+10 -191407 -1 -258113 0 1;
+#X obj 344 86 vsl 15 56 1 10 0 1 empty empty Ratio -8 -9 0 10 -191407
+-1 -258113 5500 1;
+#X obj 433 86 vsl 15 56 0.001 3 1 0 empty empty Attack -10 -9 0 10
+-191407 -1 -4160 5200 1;
+#X obj 510 89 vsl 15 56 0.001 3 1 0 empty empty Release -12 -9 0 10
+-191407 -1 -4160 0 1;
+#X floatatom 88 252 5 0 0 1 dB - -, f 5;
+#X obj 89 176 rmstodb;
+#X obj 90 211 - 100;
+#X floatatom 229 253 5 0 0 1 dB - -, f 5;
+#X obj 228 181 rmstodb;
+#X obj 227 219 - 100;
+#X obj 431 185 * 1000;
+#X obj 507 184 * 1000;
+#X obj 124 156 s MakeupGain;
+#X obj 197 324 r MakeupGain;
+#X obj 293 324 r Threshold;
+#X obj 258 158 s Threshold;
+#X obj 826 406 send~ Audio;
+#X obj 76 324 receive~ Audio;
+#X obj 360 160 s Ratio;
+#X obj 388 324 r Ratio;
+#X obj 439 160 s Attack;
+#X obj 455 324 r Attack;
+#X obj 513 161 s Release;
+#X obj 537 325 r Release;
+#X text 240 35 Compressor Parameters;
+#X text 219 293 Compressor;
+#X obj 735 252 readsf~ 2;
+#X obj 730 132 metro 500;
+#X obj 732 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 734 199 open kick.wav \, 1;
+#X text 766 35 Choose a test signal;
+#X obj 730 406 send~ Audio;
+#X obj 731 340 *~;
+#X text 949 54 Kick;
+#X text 1018 55 Sinus Wave;
+#X floatatom 1020 302 5 0 0 1 dB - -, f 5;
+#X obj 1018 217 rmstodb;
+#X obj 1019 252 - 100;
+#X obj 839 335 *~;
+#X obj 1024 92 vsl 15 50 0.001 0.2 0 0 empty empty SinusVolume 0 -9
+0 10 -191407 -258113 -260097 4900 1;
+#X connect 0 0 17 0;
+#X connect 1 0 60 0;
 #X connect 1 0 8 0;
 #X connect 6 0 11 0;
 #X connect 7 0 10 0;
-#X connect 7 0 22 0;
+#X connect 7 0 20 0;
 #X connect 8 0 9 0;
-#X connect 8 0 0 0;
 #X connect 9 0 7 0;
 #X connect 11 0 8 1;
-#X connect 13 0 0 1;
-#X connect 14 0 0 2;
-#X connect 15 0 0 3;
-#X connect 16 0 0 4;
-#X connect 17 0 0 5;
-#X connect 18 0 20 0;
-#X connect 19 0 18 0;
+#X connect 11 0 54 1;
+#X connect 11 0 58 0;
+#X connect 11 0 60 1;
+#X connect 16 0 18 0;
+#X connect 17 0 16 0;
+#X connect 21 0 27 0;
+#X connect 21 0 34 0;
+#X connect 22 0 30 0;
+#X connect 22 0 37 0;
 #X connect 23 0 13 0;
-#X connect 24 0 14 0;
-#X connect 25 0 15 0;
-#X connect 26 0 16 0;
-#X connect 27 0 17 0;
+#X connect 23 0 40 0;
+#X connect 24 0 32 0;
+#X connect 24 0 42 0;
+#X connect 25 0 33 0;
+#X connect 25 0 44 0;
+#X connect 27 0 28 0;
+#X connect 28 0 26 0;
+#X connect 30 0 31 0;
+#X connect 31 0 29 0;
+#X connect 32 0 14 0;
+#X connect 33 0 15 0;
+#X connect 35 0 0 1;
+#X connect 36 0 0 2;
+#X connect 39 0 0 0;
+#X connect 41 0 0 3;
+#X connect 43 0 0 4;
+#X connect 45 0 0 5;
+#X connect 48 0 54 0;
+#X connect 49 0 50 0;
+#X connect 50 0 51 0;
+#X connect 51 0 48 0;
+#X connect 54 0 53 0;
+#X connect 58 0 59 0;
+#X connect 59 0 57 0;
+#X connect 60 0 38 0;
+#X connect 61 0 60 1;
+#X connect 61 0 11 0;
