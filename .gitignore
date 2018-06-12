@@ -1,3 +1,6 @@
-*.o
+﻿*.o
 *.pd_darwin
 .project
+.cproject
+.settings/
+*.pd_linux
