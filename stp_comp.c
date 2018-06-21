@@ -33,6 +33,7 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
 
     	if (in_abs == 0) {
     		out[i] = in_abs;
+    		x->post_level_detector = in_abs;
     		return;
     	}
 
@@ -48,7 +49,7 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
     	}
 
     	// Pre level detector (feed forward loop)
-    	buffer = buffer / in_abs;
+    	buffer = in_abs / buffer;
 
     	// Level detector
     	if (buffer > x->post_level_detector) {
@@ -58,7 +59,7 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
     		x->post_level_detector = a_release * x->post_level_detector + (1 - a_release) * buffer;
     	}
 
-    	control_voltage = x->post_level_detector / x->makeup_gain;
+    	control_voltage = x->makeup_gain / x->post_level_detector;
 
     	out[i] = in[i] * control_voltage;
     }
