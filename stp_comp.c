@@ -10,6 +10,7 @@ stp_comp *stp_comp_new()
     x->knee_width = 0.1;
     x->attack = 0.02;
     x->release = 0.02;
+    x->post_level_detector = 0;
 
     return x;
 }
@@ -19,18 +20,21 @@ void stp_comp_free(stp_comp *x)
     free(x);
 }
 
-void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, int n, float sampling_rate)
+void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, int vector_size, float sampling_rate)
 {
-	float a_attack, a_release, in_abs, buffer, post_level_detector, control_voltage;
-
-	post_level_detector = 0;
+	float a_attack, a_release, in_abs, buffer, control_voltage;
 
     // Calculate smooth detection filter coefficients eq. 7
     a_attack = expf(-1 / (x->attack * sampling_rate));
     a_release = expf(-1 / (x->release * sampling_rate));
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < vector_size; ++i) {
     	in_abs = fabsf(in[i]);
+
+    	if (in_abs == 0) {
+    		out[i] = in_abs;
+    		return;
+    	}
 
     	// Gain computer
     	if (2 * (in_abs - x->threshold) < -1 * x->knee_width) {
@@ -44,17 +48,17 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
     	}
 
     	// Pre level detector (feed forward loop)
-    	buffer = in_abs - buffer;
+    	buffer = buffer / in_abs;
 
     	// Level detector
-    	if (buffer > post_level_detector) {
-    		post_level_detector = a_attack * post_level_detector + (1 - a_attack) * buffer;
+    	if (buffer > x->post_level_detector) {
+    		x->post_level_detector = a_attack * x->post_level_detector + (1 - a_attack) * buffer;
     	}
     	else {
-    		post_level_detector = a_release * post_level_detector + (1 - a_release) * buffer;
+    		x->post_level_detector = a_release * x->post_level_detector + (1 - a_release) * buffer;
     	}
 
-    	control_voltage = x->makeup_gain - post_level_detector;
+    	control_voltage = x->post_level_detector / x->makeup_gain;
 
     	out[i] = in[i] * control_voltage;
     }

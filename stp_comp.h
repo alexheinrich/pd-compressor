@@ -19,6 +19,8 @@ typedef struct stp_comp
     // Peak detector variables
     float attack;  // in s
     float release; // in s
+
+    float post_level_detector;
 } stp_comp;
 
 stp_comp *stp_comp_new();
