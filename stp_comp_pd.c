@@ -14,6 +14,7 @@ typedef struct stp_comp_tilde
     t_inlet *in_ratio;
     t_inlet *in_attack;
     t_inlet *in_release;
+    t_inlet *in_knee_width;
     t_outlet*x_out_l;
     t_outlet*x_out_r;
 } stp_comp_tilde;
@@ -44,6 +45,7 @@ void stp_comp_tilde_free(stp_comp_tilde *x)
 	inlet_free(x->in_ratio);
 	inlet_free(x->in_attack);
 	inlet_free(x->in_release);
+	inlet_free(x->in_knee_width);
 
     outlet_free(x->x_out_l);
     outlet_free(x->x_out_r);
@@ -67,17 +69,19 @@ void *stp_comp_tilde_new(t_floatarg f)
     x->in_ratio = floatinlet_new(&x->x_obj, &x->comp->ratio);
     x->in_attack = floatinlet_new(&x->x_obj, &x->comp->attack);
     x->in_release = floatinlet_new(&x->x_obj, &x->comp->release);
+    x->in_knee_width =floatinlet_new(&x->x_obj, &x->comp->knee_width);
 
     return (void *)x;
 }
 
-void stp_comp_set(stp_comp_tilde *x, t_floatarg makeup_gain, t_floatarg threshold, t_floatarg ratio, t_floatarg attack, t_floatarg release)
+void stp_comp_set(stp_comp_tilde *x, t_floatarg makeup_gain, t_floatarg threshold, t_floatarg ratio, t_floatarg attack, t_floatarg release,t_floatarg knee_width)
 {
     x->comp->makeup_gain = makeup_gain;
     x->comp->threshold = threshold;
     x->comp->ratio = ratio;
     x->comp->attack = attack;
     x->comp->release = release;
+    x->comp->knee_width = knee_width;
 }
 
 void stp_comp_tilde_setup(void)
