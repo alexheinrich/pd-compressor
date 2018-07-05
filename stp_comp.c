@@ -1,16 +1,17 @@
 #include "stp_comp.h"
+#include "m_pd.h"
 
 stp_comp *stp_comp_new()
 {
     stp_comp *x = (stp_comp *) malloc(sizeof(stp_comp));
 
     x->makeup_gain = 0;
-    x->threshold = 0;
     x->ratio = 1;
+    x->threshold = 0;
     x->knee_width = 1;
-    x->attack = 0.01;
-    x->release = 0.01;
-    x->post_level_detector = 0;
+    x->attack = 0.01f;
+    x->release = 0.02f;
+    x->post_level_detector = 0.0f;
     return x;
 }
 
@@ -22,58 +23,69 @@ void stp_comp_free(stp_comp *x)
 void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, int vector_size, float sampling_rate)
 {
 	float a_attack, a_release, in_abs, buffer, control_voltage;
+
 	// Set knee soft or hard
-	if (x->knee_width == 0){ // hard knee
+	if (x->knee_width == 0) { // hard knee
 		x->knee_width = 0;
 	}
-	else if (x->knee_width == 1){ // soft knee
+	else if (x->knee_width == 1) { // soft knee
 		x->knee_width = 20;
 	}
 	// Exception handling
 	else {
 		x->knee_width = 0;
 	}
+
 	// Ratio exception handling
 	if (x->ratio < 1) {
 		x->ratio = 1;
 	}
+
 	// Level detector exception handling
 	if (x->attack <= 0) {
 		x->attack = 0.001;
 	}
+
 	if (x->release <= 0) {
 		x->release = 0.001;
 	}
+
     // Calculate smooth detection filter coefficients eq. 7
     a_attack = expf(-1 / (x->attack * sampling_rate));
     a_release = expf(-1 / (x->release * sampling_rate));
+
     // Generate the control voltage
     for (int i = 0; i < vector_size; ++i) {
     	in_abs = fabsf(in[i]);
     	// Convert values in dB
-    	in_abs = 20*log(in_abs);
+    	in_abs = 20 * logf(in_abs);
+
     	// Gain computer
-    	if (2 * (in_abs - x->threshold) < -1 * x->knee_width) {
+    	if (2.0f * (in_abs - x->threshold) < -1.0f * x->knee_width) {
     		buffer = in_abs;
     	}
-    	else if (2 * fabsf(in_abs - x->threshold) <= x->knee_width) {
-    		buffer = in_abs + (1 / x->ratio - 1) * pow(in_abs - x->threshold + x->knee_width / 2, 2) / (2 * x->knee_width);
+    	else if (2.0f * fabsf(in_abs - x->threshold) <= x->knee_width) {
+    		buffer = in_abs + (1.0f / x->ratio - 1.0f) * powf(in_abs - x->threshold + x->knee_width / 2.0f, 2.0f) / (2.0f * x->knee_width);
     	}
     	else {
     		buffer = x->threshold + (in_abs - x->threshold) / x->ratio;
     	}
+
     	// Pre-level detector (feed forward loop)
     	buffer = in_abs - buffer;
+
     	// Level detector
     	if (buffer > x->post_level_detector) {
-    		x->post_level_detector = a_attack * x->post_level_detector + (1 - a_attack) * buffer;
+    		x->post_level_detector = a_attack * x->post_level_detector + (1.0f - a_attack) * buffer;
     	}
     	else {
-    		x->post_level_detector = a_release * x->post_level_detector + (1 - a_release) * buffer;
+    		x->post_level_detector = a_release * x->post_level_detector + (1.0f - a_release) * buffer;
     	}
+
     	// Control voltage
-    	control_voltage = x->makeup_gain - x->post_level_detector;
+    	control_voltage = buffer;
+
     	// Convert the control voltage to linear and apply it to the audio.
-    	out[i] = in[i] * pow(10,control_voltage/20);
+    	out[i] = in[i] * powf(10.0f, control_voltage / 20.0f);
     }
 }
