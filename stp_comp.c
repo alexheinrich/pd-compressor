@@ -75,6 +75,6 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
     	// Control voltage
     	control_voltage = x->makeup_gain - x->post_level_detector;
     	// Convert the control voltage to linear and apply it to the audio.
-    	out[i] = in[i] * pow(10,control_voltage/20);
+    	out[i] = in[i] * powf(10,control_voltage/20);
     }
 }
