@@ -4,13 +4,13 @@ stp_comp *stp_comp_new()
 {
     stp_comp *x = (stp_comp *) malloc(sizeof(stp_comp));
 
-    x->makeup_gain = 0;
-    x->threshold = 0;
-    x->ratio = 1;
-    x->knee_width = 1;
+    x->makeup_gain = 0.0f;
+    x->threshold = 0.0f;
+    x->ratio = 1.0f;
+    x->knee_width = 1.0f;
     x->attack = 0.01;
-    x->release = 0.01;
-    x->post_level_detector = 0;
+    x->release = 0.02;
+    x->post_level_detector = 0.0f;
     return x;
 }
 
@@ -19,23 +19,24 @@ void stp_comp_free(stp_comp *x)
     free(x);
 }
 
+
 void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, int vector_size, float sampling_rate)
 {
 	float a_attack, a_release, in_abs, buffer, control_voltage;
 	// Set knee soft or hard
-	if (x->knee_width == 0){ // hard knee
-		x->knee_width = 0;
+	if (x->knee_width == 0.0){ // hard knee
+		x->knee_width = 0.0;
 	}
-	else if (x->knee_width == 1){ // soft knee
-		x->knee_width = 20;
+	else if (x->knee_width == 1.0){ // soft knee
+		x->knee_width = 20.0;
 	}
 	// Exception handling
 	else {
-		x->knee_width = 0;
+		x->knee_width = 0.0f;
 	}
 	// Ratio exception handling
-	if (x->ratio < 1) {
-		x->ratio = 1;
+	if (x->ratio < 1.0) {
+		x->ratio = 1.0;
 	}
 	// Level detector exception handling
 	if (x->attack <= 0) {
