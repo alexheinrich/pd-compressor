@@ -1,0 +1,19 @@
+\hypertarget{stp__comp_8h}{}\section{stp\+\_\+comp.\+h File Reference}
+\label{stp__comp_8h}\index{stp\+\_\+comp.\+h@{stp\+\_\+comp.\+h}}
+
+
+\mbox{\hyperlink{structstp__comp}{stp\+\_\+comp}} Feed-\/forward design dynamic range compressor. The detector is placed in the log domain after ~\newline
+ the gain computer, since this generates a smooth envelope, has no attack lag, and allows ~\newline
+ for easy implementation of variable knee width. For the compressor to have smooth performance on a wide ~\newline
+ variety of signals, with minimal artifacts and minimal modification of timbral characteristics, ~\newline
+ the smooth, decoupled peak detector design has been used. ~\newline
+ ~\newline
+ Algorithms have been taken from\+: ~\newline
+ Giannoulis, Dimitrios \& Massberg, Michael \& Reiss, Joshua. (2012). Digital Dynamic Range Compressor Design—A Tutorial and Analysis. A\+ES\+: Journal of the Audio Engineering Society. 60. ~\newline
+  
+
+
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+Include dependency graph for stp\+\_\+comp.\+h\+:

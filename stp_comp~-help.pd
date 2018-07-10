@@ -1,0 +1,84 @@
+#N canvas 1361 71 1918 996 10;
+#X obj 179 431 stp_comp~;
+#X text 889 42 <-Click to start;
+#X text 897 90 <-Click to stop;
+#X msg 810 81 \; pd dsp 0 \;;
+#X msg 808 29 \; pd dsp 1 \;;
+#X obj 83 522 - 100;
+#X obj 88 488 env~;
+#X obj 92 580 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
+#X text 57 717 Compressor Output;
+#X obj 92 83 vsl 15 56 0 6 0 0 empty empty Makeup_Gain -22 -9 0 10
+-191407 -1 -159808 0 1;
+#X obj 243 85 vsl 15 56 -40 0 0 0 empty empty Threshold -22 -9 0 10
+-191407 -1 -258113 4700 1;
+#X obj 344 86 vsl 15 56 1 10 0 1 empty empty Ratio -8 -9 0 10 -191407
+-1 -258113 2000 1;
+#X obj 433 86 vsl 15 56 0.001 3 1 0 empty empty Attack -10 -9 0 10
+-191407 -1 -4160 400 1;
+#X obj 516 86 vsl 15 56 0.001 3 1 0 empty empty Release -12 -9 0 10
+-191407 -1 -4160 600 1;
+#X floatatom 91 243 5 0 0 1 dB - -, f 5;
+#X floatatom 242 246 5 0 0 1 dB - -, f 5;
+#X obj 431 185 * 1000;
+#X obj 507 184 * 1000;
+#X obj 124 156 s MakeupGain;
+#X obj 197 324 r MakeupGain;
+#X obj 293 324 r Threshold;
+#X obj 258 158 s Threshold;
+#X obj 76 324 receive~ Audio;
+#X obj 360 160 s Ratio;
+#X obj 388 324 r Ratio;
+#X obj 439 160 s Attack;
+#X obj 455 324 r Attack;
+#X obj 513 161 s Release;
+#X obj 528 322 r Release;
+#X text 240 35 Compressor Parameters;
+#X text 219 293 Compressor;
+#X obj 827 337 *~;
+#X obj 613 322 r Knee;
+#X obj 601 91 tgl 30 0 empty empty Knee 0 -10 0 10 -262144 -1 -45076
+1 1;
+#X floatatom 602 249 5 0 0 3 1=Hard|0=Soft_Knee - -, f 5;
+#X obj 652 164 s Knee;
+#X floatatom 511 246 5 0 0 3 Release(ms) - -, f 5;
+#X floatatom 429 247 5 0 0 3 Attack(ms) - -, f 5;
+#X floatatom 344 245 5 0 0 3 Ratio - -, f 5;
+#X obj 171 499 dac~;
+#X text 152 524 Play the audio;
+#X obj 824 400 send~ Audio;
+#X text 819 434 Connect the audio here;
+#X obj 826 282 osc~;
+#X obj 889 287 nbx 5 14 0.01 1 1 1 empty empty Volume 0 -8 0 10 -262144
+-1 -1 0.5 256;
+#X text 824 245 Test signal;
+#X text 314 428 Feed-forward design dynamic range compressor;
+#X connect 0 0 6 0;
+#X connect 0 0 39 0;
+#X connect 0 0 39 1;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 9 0 14 0;
+#X connect 9 0 18 0;
+#X connect 10 0 21 0;
+#X connect 10 0 15 0;
+#X connect 11 0 23 0;
+#X connect 11 0 38 0;
+#X connect 12 0 16 0;
+#X connect 12 0 25 0;
+#X connect 13 0 17 0;
+#X connect 13 0 27 0;
+#X connect 16 0 37 0;
+#X connect 17 0 36 0;
+#X connect 19 0 0 1;
+#X connect 20 0 0 2;
+#X connect 22 0 0 0;
+#X connect 24 0 0 3;
+#X connect 26 0 0 4;
+#X connect 28 0 0 5;
+#X connect 31 0 41 0;
+#X connect 32 0 0 6;
+#X connect 33 0 34 0;
+#X connect 33 0 35 0;
+#X connect 43 0 31 0;
+#X connect 44 0 31 1;
