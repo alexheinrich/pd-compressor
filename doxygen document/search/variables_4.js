@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ratio',['ratio',['../structstp__comp.html#a207ad05f99cc72068a92358861ff5e71',1,'stp_comp']]],
-  ['release',['release',['../structstp__comp.html#a3dee5c7240d1c7d471a78f3457342ec7',1,'stp_comp']]]
+  ['ratio',['ratio',['../structstp__comp.html#af974f00e16ea96857c98da1e03da87fa',1,'stp_comp']]],
+  ['release',['release',['../structstp__comp.html#a7e17e06c076d551fc4f85343b9a1804c',1,'stp_comp']]]
 ];

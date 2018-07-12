@@ -17,7 +17,7 @@
 
 #ifndef stp_comp_h
 #define stp_comp_h
-#define MINUS_INF -100 /*! Used to replace log(0) in decibel conversion */
+#define MINUS_INF -100 /**< Used to replace log(0) in decibel conversion */
 
 #include <math.h>
 #include <stdio.h>
@@ -28,17 +28,17 @@ typedef float STP_OUTPUTVECTOR;
 
 typedef struct stp_comp
 {
-    //! Gain computer variables
-    float makeup_gain; /*! in dB. The compressor reduces the level (gain) of the signal; therefore, applying a make-up gain to the signal allows for matching the input and output loudness level. */
-    float ratio; /*! controls the input/output ratio for signals overshooting the threshold level. It determines the amount of compression applied. */
-    float threshold; /*!<  in dB. It defines the level above which compression starts. Any signal overshooting the threshold will be reduced in level. */
-    float knee_width; /*!<  Important: It only accepts 0 or 1 as input. 1 Sets soft knee (20dB) and 0 hard knee (0dB). It controls whether the bend in the compression characteristic (see Fig. 1) has a sharp angle or has a rounded edge.*/
+	// Gain computer variables
+    float makeup_gain; /**< in dB. The compressor reduces the level (gain) of the signal; therefore, applying a make-up gain to the signal allows for matching the input and output loudness level. */
+    float ratio; /**< controls the input/output ratio for signals overshooting the threshold level. It determines the amount of compression applied. */
+    float threshold; /**<  in dB. It defines the level above which compression starts. Any signal overshooting the threshold will be reduced in level. */
+    float knee_width; /**<  Important: It only accepts 0 or 1 as input. 1 Sets soft knee (20dB) and 0 hard knee (0dB). It controls whether the bend in the compression characteristic (see Fig. 1) has a sharp angle or has a rounded edge. */
 
-    //! Peak detector variables.
-    float attack;  /*! Attack time of compressor in s */
-    float release; /*! Release time of compressor in s */
+    // Peak detector variables.
+    float attack;  /**< Attack time of compressor in s */
+    float release; /**< Release time of compressor in s */
 
-    float post_level_detector; /*! Dummy variable for stp_perform function*/
+    float post_level_detector; /**< Dummy variable for stp_perform function */
 } stp_comp;
 
 /**

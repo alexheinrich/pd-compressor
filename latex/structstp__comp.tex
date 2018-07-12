@@ -1,23 +1,21 @@
 \hypertarget{structstp__comp}{}\section{stp\+\_\+comp Struct Reference}
 \label{structstp__comp}\index{stp\+\_\+comp@{stp\+\_\+comp}}
-\subsection*{Data Fields}
+\subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structstp__comp_a192e85a07da4c38529ba73e019a6f597}\label{structstp__comp_a192e85a07da4c38529ba73e019a6f597}} 
-float \mbox{\hyperlink{structstp__comp_a192e85a07da4c38529ba73e019a6f597}{makeup\+\_\+gain}}
-\begin{DoxyCompactList}\small\item\em Gain computer variables. \end{DoxyCompactList}\item 
-float \mbox{\hyperlink{structstp__comp_a207ad05f99cc72068a92358861ff5e71}{ratio}}
+float \mbox{\hyperlink{structstp__comp_a1b05876761b61dbd892522db342e0164}{makeup\+\_\+gain}}
 \item 
-float \mbox{\hyperlink{structstp__comp_a376acef8954eadc70f4b55e8e0588e13}{threshold}}
+float \mbox{\hyperlink{structstp__comp_af974f00e16ea96857c98da1e03da87fa}{ratio}}
 \item 
-float \mbox{\hyperlink{structstp__comp_a177e7480fe81136c83715e274f5600d9}{knee\+\_\+width}}
+float \mbox{\hyperlink{structstp__comp_a9088e7fa7f1326cd58285b1436f51a13}{threshold}}
 \item 
-\mbox{\Hypertarget{structstp__comp_a6debdaced8e960a83625dc7bbbec4b3e}\label{structstp__comp_a6debdaced8e960a83625dc7bbbec4b3e}} 
-float \mbox{\hyperlink{structstp__comp_a6debdaced8e960a83625dc7bbbec4b3e}{attack}}
-\begin{DoxyCompactList}\small\item\em Peak detector variables. \end{DoxyCompactList}\item 
-float \mbox{\hyperlink{structstp__comp_a3dee5c7240d1c7d471a78f3457342ec7}{release}}
+float \mbox{\hyperlink{structstp__comp_af76f213eccad338ea25159cf33cf1836}{knee\+\_\+width}}
 \item 
-float \mbox{\hyperlink{structstp__comp_a8471668a5e9d7dea04b4e891eb186edf}{post\+\_\+level\+\_\+detector}}
+float \mbox{\hyperlink{structstp__comp_a8a102a4737ae2985fceb43130b74d0d6}{attack}}
+\item 
+float \mbox{\hyperlink{structstp__comp_a7e17e06c076d551fc4f85343b9a1804c}{release}}
+\item 
+float \mbox{\hyperlink{structstp__comp_a4f4614383b3dc45ef0d988670dea4cf7}{post\+\_\+level\+\_\+detector}}
 \end{DoxyCompactItemize}
 \subsection*{Related Functions}
 (Note that these are not member functions.) \begin{DoxyCompactItemize}
@@ -66,38 +64,50 @@ a pointer to the newly created \mbox{\hyperlink{structstp__comp}{stp\+\_\+comp}}
 \end{DoxyReturn}
 
 
-\subsection{Field Documentation}
-\mbox{\Hypertarget{structstp__comp_a177e7480fe81136c83715e274f5600d9}\label{structstp__comp_a177e7480fe81136c83715e274f5600d9}} 
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structstp__comp_a8a102a4737ae2985fceb43130b74d0d6}\label{structstp__comp_a8a102a4737ae2985fceb43130b74d0d6}} 
+\index{stp\+\_\+comp@{stp\+\_\+comp}!attack@{attack}}
+\index{attack@{attack}!stp\+\_\+comp@{stp\+\_\+comp}}
+\subsubsection{\texorpdfstring{attack}{attack}}
+{\footnotesize\ttfamily float stp\+\_\+comp\+::attack}
+
+Attack time of compressor in s \mbox{\Hypertarget{structstp__comp_af76f213eccad338ea25159cf33cf1836}\label{structstp__comp_af76f213eccad338ea25159cf33cf1836}} 
 \index{stp\+\_\+comp@{stp\+\_\+comp}!knee\+\_\+width@{knee\+\_\+width}}
 \index{knee\+\_\+width@{knee\+\_\+width}!stp\+\_\+comp@{stp\+\_\+comp}}
 \subsubsection{\texorpdfstring{knee\+\_\+width}{knee\_width}}
-{\footnotesize\ttfamily float knee\+\_\+width}
+{\footnotesize\ttfamily float stp\+\_\+comp\+::knee\+\_\+width}
 
-Important\+: It only accepts 0 or 1 as input. 1 Sets soft knee (20dB) and 0 hard knee (0dB). It controls whether the bend in the compression characteristic (see Fig. 1) has a sharp angle or has a rounded edge. \mbox{\Hypertarget{structstp__comp_a8471668a5e9d7dea04b4e891eb186edf}\label{structstp__comp_a8471668a5e9d7dea04b4e891eb186edf}} 
+Important\+: It only accepts 0 or 1 as input. 1 Sets soft knee (20dB) and 0 hard knee (0dB). It controls whether the bend in the compression characteristic (see Fig. 1) has a sharp angle or has a rounded edge. \mbox{\Hypertarget{structstp__comp_a1b05876761b61dbd892522db342e0164}\label{structstp__comp_a1b05876761b61dbd892522db342e0164}} 
+\index{stp\+\_\+comp@{stp\+\_\+comp}!makeup\+\_\+gain@{makeup\+\_\+gain}}
+\index{makeup\+\_\+gain@{makeup\+\_\+gain}!stp\+\_\+comp@{stp\+\_\+comp}}
+\subsubsection{\texorpdfstring{makeup\+\_\+gain}{makeup\_gain}}
+{\footnotesize\ttfamily float stp\+\_\+comp\+::makeup\+\_\+gain}
+
+in dB. The compressor reduces the level (gain) of the signal; therefore, applying a make-\/up gain to the signal allows for matching the input and output loudness level. \mbox{\Hypertarget{structstp__comp_a4f4614383b3dc45ef0d988670dea4cf7}\label{structstp__comp_a4f4614383b3dc45ef0d988670dea4cf7}} 
 \index{stp\+\_\+comp@{stp\+\_\+comp}!post\+\_\+level\+\_\+detector@{post\+\_\+level\+\_\+detector}}
 \index{post\+\_\+level\+\_\+detector@{post\+\_\+level\+\_\+detector}!stp\+\_\+comp@{stp\+\_\+comp}}
 \subsubsection{\texorpdfstring{post\+\_\+level\+\_\+detector}{post\_level\_detector}}
-{\footnotesize\ttfamily float post\+\_\+level\+\_\+detector}
+{\footnotesize\ttfamily float stp\+\_\+comp\+::post\+\_\+level\+\_\+detector}
 
-Release time of compressor in s \mbox{\Hypertarget{structstp__comp_a207ad05f99cc72068a92358861ff5e71}\label{structstp__comp_a207ad05f99cc72068a92358861ff5e71}} 
+Dummy variable for stp\+\_\+perform function \mbox{\Hypertarget{structstp__comp_af974f00e16ea96857c98da1e03da87fa}\label{structstp__comp_af974f00e16ea96857c98da1e03da87fa}} 
 \index{stp\+\_\+comp@{stp\+\_\+comp}!ratio@{ratio}}
 \index{ratio@{ratio}!stp\+\_\+comp@{stp\+\_\+comp}}
 \subsubsection{\texorpdfstring{ratio}{ratio}}
-{\footnotesize\ttfamily float ratio}
+{\footnotesize\ttfamily float stp\+\_\+comp\+::ratio}
 
-in dB. The compressor reduces the level (gain) of the signal; therefore, applying a make-\/up gain to the signal allows for matching the input and output loudness level. \mbox{\Hypertarget{structstp__comp_a3dee5c7240d1c7d471a78f3457342ec7}\label{structstp__comp_a3dee5c7240d1c7d471a78f3457342ec7}} 
+controls the input/output ratio for signals overshooting the threshold level. It determines the amount of compression applied. \mbox{\Hypertarget{structstp__comp_a7e17e06c076d551fc4f85343b9a1804c}\label{structstp__comp_a7e17e06c076d551fc4f85343b9a1804c}} 
 \index{stp\+\_\+comp@{stp\+\_\+comp}!release@{release}}
 \index{release@{release}!stp\+\_\+comp@{stp\+\_\+comp}}
 \subsubsection{\texorpdfstring{release}{release}}
-{\footnotesize\ttfamily float release}
+{\footnotesize\ttfamily float stp\+\_\+comp\+::release}
 
-Attack time of compressor in s \mbox{\Hypertarget{structstp__comp_a376acef8954eadc70f4b55e8e0588e13}\label{structstp__comp_a376acef8954eadc70f4b55e8e0588e13}} 
+Release time of compressor in s \mbox{\Hypertarget{structstp__comp_a9088e7fa7f1326cd58285b1436f51a13}\label{structstp__comp_a9088e7fa7f1326cd58285b1436f51a13}} 
 \index{stp\+\_\+comp@{stp\+\_\+comp}!threshold@{threshold}}
 \index{threshold@{threshold}!stp\+\_\+comp@{stp\+\_\+comp}}
 \subsubsection{\texorpdfstring{threshold}{threshold}}
-{\footnotesize\ttfamily float threshold}
+{\footnotesize\ttfamily float stp\+\_\+comp\+::threshold}
 
-controls the input/output ratio for signals overshooting the threshold level. It determines the amount of compression applied. in dB. It defines the level above which compression starts. Any signal overshooting the threshold will be reduced in level. 
+in dB. It defines the level above which compression starts. Any signal overshooting the threshold will be reduced in level. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

@@ -18,10 +18,15 @@
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 Include dependency graph for stp\+\_\+comp.\+h\+:
 % FIG 0
-\subsection*{Data Structures}
+\subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structstp__comp}{stp\+\_\+comp}}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{stp__comp_8h_aa48b28e62c168ecef26792b023bedb09}{M\+I\+N\+U\+S\+\_\+\+I\+NF}}~-\/100
 \end{DoxyCompactItemize}
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
@@ -54,3 +59,13 @@ Alex Heinrich, Mert Aslantürk, Simon Gapp ~\newline
  ~\newline
  
 \end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{stp__comp_8h_aa48b28e62c168ecef26792b023bedb09}\label{stp__comp_8h_aa48b28e62c168ecef26792b023bedb09}} 
+\index{stp\+\_\+comp.\+h@{stp\+\_\+comp.\+h}!M\+I\+N\+U\+S\+\_\+\+I\+NF@{M\+I\+N\+U\+S\+\_\+\+I\+NF}}
+\index{M\+I\+N\+U\+S\+\_\+\+I\+NF@{M\+I\+N\+U\+S\+\_\+\+I\+NF}!stp\+\_\+comp.\+h@{stp\+\_\+comp.\+h}}
+\subsubsection{\texorpdfstring{M\+I\+N\+U\+S\+\_\+\+I\+NF}{MINUS\_INF}}
+{\footnotesize\ttfamily \#define M\+I\+N\+U\+S\+\_\+\+I\+NF~-\/100}
+
+Used to replace log(0) in decibel conversion 
