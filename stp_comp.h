@@ -17,6 +17,7 @@
 
 #ifndef stp_comp_h
 #define stp_comp_h
+#define MINUS_INF -100 /*! Used to replace log(0) in decibel conversion */
 
 #include <math.h>
 #include <stdio.h>
