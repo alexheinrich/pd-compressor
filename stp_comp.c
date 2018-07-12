@@ -52,7 +52,7 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
     		// Convert values in dB
     		in_abs = 20.0f * logf(in_abs);
     	}
-		else{
+		else {
 			in_abs = MINUS_INF;
     	}
 

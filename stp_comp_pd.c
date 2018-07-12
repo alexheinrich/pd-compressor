@@ -74,16 +74,6 @@ void *stp_comp_tilde_new(t_floatarg f)
     return (void *)x;
 }
 
-void stp_comp_set(stp_comp_tilde *x, t_floatarg makeup_gain, t_floatarg threshold, t_floatarg ratio, t_floatarg attack, t_floatarg release,t_floatarg knee_width)
-{
-    x->comp->makeup_gain = makeup_gain;
-    x->comp->threshold = threshold;
-    x->comp->ratio = ratio;
-    x->comp->attack = attack;
-    x->comp->release = release;
-    x->comp->knee_width = knee_width;
-}
-
 void stp_comp_tilde_setup(void)
 {
       stp_comp_tilde_class = class_new(gensym("stp_comp~"),
@@ -94,8 +84,5 @@ void stp_comp_tilde_setup(void)
             A_DEFFLOAT, 0);
 
       class_addmethod(stp_comp_tilde_class, (t_method)stp_comp_tilde_dsp, gensym("dsp"), 0);
-
-      // this adds the gain message to our object
-      class_addmethod(stp_comp_tilde_class, (t_method)stp_comp_set, gensym("set"), A_DEFFLOAT, 0);
       CLASS_MAINSIGNALIN(stp_comp_tilde_class, stp_comp_tilde, f);
 }

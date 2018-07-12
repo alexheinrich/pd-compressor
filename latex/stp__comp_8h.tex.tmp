@@ -54,8 +54,8 @@ typedef struct \mbox{\hyperlink{structstp__comp}{stp\+\_\+comp}} {\bfseries stp\
  
 
 \begin{DoxyAuthor}{Author}
-Alex Heinrich, Mert Aslantürk, Simon Gapp ~\newline
- Technical University of Berlin ~\newline
+Alex Heinrich, Mert Aslantürk, Simon Gapp~\newline
+ Technische Universität Berlin ~\newline
  ~\newline
  
 \end{DoxyAuthor}

@@ -1,7 +1,7 @@
 /**
  * @file stp_comp.h
- * @author Alex Heinrich, Mert Aslantürk, Simon Gapp <br>
- * Technical University of Berlin <br>
+ * @author Alex Heinrich, Mert Aslantürk, Simon Gapp<br>
+ * Technische Universität Berlin <br>
  * <br>
  * @brief stp_comp
  * Feed-forward design dynamic range compressor. The detector is placed in the log domain after <br>
