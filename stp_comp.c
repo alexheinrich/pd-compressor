@@ -33,7 +33,7 @@ void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, i
 
 	// Level detector exception handling
 	if (x->attack <= 0.0f) {
-		x->attack = 0.001f;
+		x->attack = 0.01f;
 	}
 
 	if (x->release <= 0.0f) {
