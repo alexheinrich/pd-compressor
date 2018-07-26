@@ -25,7 +25,13 @@ void stp_comp_free(stp_comp *x)
 void stp_comp_perform(stp_comp *x, STP_INPUTVECTOR *in, STP_OUTPUTVECTOR *out, int vector_size, float sampling_rate)
 {
 	float a_attack, a_release, in_abs, buffer, control_voltage;
-
+	// Knee width 1 sets 20 dB knee (soft). Rest is hard knee as default.
+	if (x->knee_width == 1){
+		x->knee_width = 20;
+	}
+	else {
+		x->knee_width = 0;
+	}
 	// Ratio exception handling
 	if (x->ratio < 1.0f) {
 		x->ratio = 1.0f;

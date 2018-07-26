@@ -1,4 +1,4 @@
-#N canvas 1361 71 1918 996 10;
+#N canvas 1 56 1353 684 10;
 #X obj 179 431 stp_comp~;
 #X text 889 42 <-Click to start;
 #X text 897 90 <-Click to stop;
@@ -11,13 +11,13 @@
 #X obj 92 83 vsl 15 56 0 6 0 0 empty empty Makeup_Gain -22 -9 0 10
 -191407 -1 -159808 0 1;
 #X obj 243 85 vsl 15 56 -40 0 0 0 empty empty Threshold -22 -9 0 10
--191407 -1 -258113 4700 1;
+-191407 -1 -258113 0 1;
 #X obj 344 86 vsl 15 56 1 10 0 1 empty empty Ratio -8 -9 0 10 -191407
 -1 -258113 2000 1;
 #X obj 433 86 vsl 15 56 0.001 3 1 0 empty empty Attack -10 -9 0 10
--191407 -1 -4160 400 1;
+-191407 -1 -4160 0 1;
 #X obj 516 86 vsl 15 56 0.001 3 1 0 empty empty Release -12 -9 0 10
--191407 -1 -4160 600 1;
+-191407 -1 -4160 0 1;
 #X floatatom 91 243 5 0 0 1 dB - -, f 5;
 #X floatatom 242 246 5 0 0 1 dB - -, f 5;
 #X obj 431 185 * 1000;
@@ -38,8 +38,8 @@
 #X obj 827 337 *~;
 #X obj 613 322 r Knee;
 #X obj 601 91 tgl 30 0 empty empty Knee 0 -10 0 10 -262144 -1 -45076
-1 1;
-#X floatatom 602 249 5 0 0 3 1=Hard|0=Soft_Knee - -, f 5;
+0 1;
+#X floatatom 602 249 5 0 0 3 1=Soft|0=Hard_Knee - -, f 5;
 #X obj 652 164 s Knee;
 #X floatatom 511 246 5 0 0 3 Release(ms) - -, f 5;
 #X floatatom 429 247 5 0 0 3 Attack(ms) - -, f 5;
