@@ -5,61 +5,63 @@ close all
 
 %Variables
 makeup_gain = 0.0;
-threshold = [-0.1, -2.5, -5, -10, -20, -40];
-ratio = [1, 2, 4, 8, 10];
-knee_width = [0, 20];
-attack = [0.01, 0.1, 1, 2, 3];
-release = [0.01, 0.1, 1, 2, 3];
+threshold = -8; %[-0.1, -2.5, -5, -10, -20, -40];
+ratio = 2;% [1, 2, 4, 8, 10];
+knee_width = 20;%[0, 20];
+attack = 0.01;%[0.01, 0.1, 1, 2, 3];
+release = 0.2;%[0.01, 0.1, 1, 2, 3];
 sampling_rate = 48e3;
 
 %% Ask if files should be saved
 show_plots=0;
 save_print=0;
 save_csv=0;
-%save to csv
-prompt='Save to csv? (y/n)';
-x = input(prompt,'s');
-if x == 'y'
-    save_csv=1;
-else
-    save_csv=0;
-end
 
-%want to see plots? remember 1500 plots at full capacity
-prompt='Show plots? (y/n)';
+prompt = 'Show plots? (y/n) ';
 x = input(prompt,'s');
 if x == 'y'
-    show_plots=1;
+    show_plots = 1;
 else
-    show_plots=0;
+    show_plots = 0;
 end
-%want to save them? 
-if show_plots == 1
-    prompt='Save images? (y/n)';
+prompt = 'Save to csv or plot? (y/n) ';
+x = input(prompt,'s');
+if x == 'y'
+    prompt = 'Save to csv? (y/n) ';
     x = input(prompt,'s');
     if x == 'y'
-        save_print=1;
+        save_csv = 1;
     else
-        save_print=0;
+        save_csv = 0;
+    end
+    prompt = 'Save plots? (y/n)';
+    x = input(prompt,'s');
+    if x == 'y'
+        save_print = 1;
+    else
+        save_print = 0;
     end
 end
+
 %Generate Number of solutions
 total_solutions = (length(threshold)*length(ratio)*length(knee_width)...
                             *length(attack)*length(release));
-%Generate test signal
+%% Generate test signal
 %Duration in s
 duration = 5;
+val = 0:1/sampling_rate:duration;
 %Frequency in Hz
 f = 440;
+amp = [linspace(0,1,length(val)/4) linspace(1,0,(length(val)/4)+1) ...
+    linspace(1,0,(length(val)/4)) linspace(.5,0,(length(val)/4))];
 %Generate Signal
-val = 0:1/sampling_rate:duration;
-y_in = sin(2*pi*f*val);
+y_in = amp.*sin(2*pi*f*val);
 %tmp variables
 a=1;
 b=1;
 c=1;
 %initialize output matrix
-out_mean_total = zeros(total_solutions, length(release)+2);
+%out_mean_total = zeros(total_solutions, length(release)+2);
 
 %% Send Testsignal to comp
 %disp is for debugging
@@ -77,7 +79,7 @@ for i = 1:length(threshold)
                         ratio(j), knee_width(k), attack(l), release(m),...
                         sampling_rate);
                     %Output matrix
-                    out_mean_total(b,:) = [threshold(i),...
+                        out_mean_total(b,:) = [threshold(i),...
                         ratio(j), ...
                         knee_width(k),...
                         attack(l),...
